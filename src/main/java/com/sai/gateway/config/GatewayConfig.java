@@ -14,30 +14,15 @@ public class GatewayConfig {
 
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder) {
-        String user = "user"; //'localhost'
-        String course = "course"; //'localhost'
+        String user = "user"; //"localhost" "user"
+        String course = "course"; //"localhost" "course"
         return builder.routes()
-                .route(r -> r.path("/token/*").or().path("/test")
-                        .filters(f -> f.filter(filter))
-                        .uri("http://"+user+":3004"))
-                .route( r -> r.path("/api/auth/*")
-                        .filters(f -> f.filter(filter))
-                        .uri("http://"+user+":3004"))
-                .route( r -> r.path("/testing")
-                        .filters(f -> f.filter(filter))
-                        .uri("http://"+course+":3005"))
-                .route( r -> r.path("/course*")
-                        .filters(f -> f.filter(filter))
-                        .uri("http://"+course+":3005"))
-                .route( r -> r.path("/course/*")
-                        .filters(f -> f.filter(filter))
-                        .uri("http://"+course+":3005"))
-                .route( r -> r.path("/mycourse*")
-                        .filters(f -> f.filter(filter))
-                        .uri("http://"+course+":3005"))
-                .route( r -> r.path("/mycourse/*")
-                        .filters(f -> f.filter(filter))
-                        .uri("http://"+course+":3005"))
-                .build();
+            .route(r -> r.path("/token/*").or().path("/api/auth/*")
+                    .filters(f -> f.filter(filter))
+                    .uri("http://"+user+":3004"))
+            .route( r -> r.path("/course/*", "/course*", "/mycourse/*", "/mycourse*", "/v2/*", "/swagger*")
+                    .filters(f -> f.filter(filter))
+                    .uri("http://"+course+":3005"))
+            .build();
     }
 }
